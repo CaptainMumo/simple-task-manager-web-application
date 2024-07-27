@@ -15,4 +15,5 @@ class TaskSerializer(serializers.ModelSerializer):
         Serializer Meta class.
         """
         model = Task
-        fields = "__all__"
+        fields = '__all__'
+        read_only_fields = ['user']
