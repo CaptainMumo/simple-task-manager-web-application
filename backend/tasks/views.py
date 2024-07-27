@@ -8,7 +8,13 @@ from .serializers import TaskSerializer
 
 class TaskViewSet(viewsets.ModelViewSet):
     """
-    Task viewset class.
+    ViewSet for managing Task instances.
+
+    GET /tasks/ - Retrieve all tasks.
+    POST /tasks/ - Create a new task.
+    GET /tasks/<id>/ - Retrieve a specific task.
+    PATCH /tasks/<id>/ - Update a task.
+    DELETE /tasks/<id>/ - Delete a task.
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
