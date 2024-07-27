@@ -21,5 +21,12 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
 
 
+    class Meta:
+        """
+        Order tasks by created_at in descending order.
+        """
+        ordering = ['-created_at']
+
+
     def __str__(self):
-        return self.title
+        return str(self.title)
