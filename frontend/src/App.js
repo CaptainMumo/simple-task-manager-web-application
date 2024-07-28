@@ -5,6 +5,8 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import TaskDetailPage from './pages/TaskDetailPage';
+import AuthPage from './pages/AuthPage';
+import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,8 +17,9 @@ const App = () => {
                 <Navigation />
                 <div className='flex-grow-1'>
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/task/:id" element={<TaskDetailPage />} />
+                        <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
+                        <Route path="/login" element={<AuthPage />} />
+                        <Route path="/task/:id" element={<PrivateRoute><TaskDetailPage /></PrivateRoute>} />
                     </Routes>
                 </div>
                 <Footer />
