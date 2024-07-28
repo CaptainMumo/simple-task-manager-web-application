@@ -3,12 +3,12 @@ Tasks app views.
 """
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets, status, generics
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .permissions import IsOwner
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import (TaskSerializer, UserSerializer, RegisterSerializer)
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -50,6 +50,26 @@ class TaskViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(user=self.request.user)
     
 
+class RegisterView(generics.CreateAPIView):
+    """
+    View for registering a new user.
+    """
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create a new user and log them in.
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        }, status=status.HTTP_201_CREATED)
+
+
 class LogoutView(APIView):
     """
     View for logging out the user.
@@ -67,4 +87,4 @@ class LogoutView(APIView):
 
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            return Response(data=str(e) ,status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
