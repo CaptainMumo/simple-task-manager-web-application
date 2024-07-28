@@ -53,7 +53,6 @@ class TaskTests(APITestCase):
 
     def test_create_task(self):
         response = self.client.post(self.task_url, self.task_data)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['title'], self.task_data['title'])
 
