@@ -48,37 +48,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data["username"], None, validated_data["password"])
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            password=validated_data["password"]
+        )
         return user
     
-
-class LoginSerializer(serializers.Serializer):
-    """
-    Login serializer class.
-    """
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, attrs):
-        """
-        Validate the username and password.
-        Returns the validated user, or raises a ValidationError.
-        """
-        user = authenticate(**attrs)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Invalid credentials.")
-    
-    def create(self, validated_data):
-        """
-        This method is not needed for authentication, but it must be implemented
-        to satisfy the abstract method requirements. 
-        """
-        raise NotImplementedError("Create method is not implemented for LoginSerializer")
-
-    def update(self, instance, validated_data):
-        """
-        This method is not needed for authentication, but it must be implemented
-        to satisfy the abstract method requirements.
-        """
-        raise NotImplementedError("Update method is not implemented for LoginSerializer")
