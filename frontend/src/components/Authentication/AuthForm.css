@@ -1,0 +1,15 @@
+/* src/components/Authentication/AuthForm.css */
+.auth-container {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .custom-tabs .nav-item {
+    flex: 1; /* Make each tab take equal width */
+    text-align: center; /* Center the text inside the tab */
+  }
+  
+  .custom-tabs .nav-link {
+    width: 100%; /* Make the link take the full width of the tab */
+  }
+  
