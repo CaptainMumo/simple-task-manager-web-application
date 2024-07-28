@@ -45,7 +45,7 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                                         onClick={() => handleMarkComplete(task.id)}
                                     />
                                 </OverlayTrigger>
-                                <div className="flex-grow-1">{task.title}</div>
+                                <div className={`flex-grow-1 ${task.completed ? 'text-decoration-line-through' : 'text-decoration-none'}`} >{task.title}</div>
                                 <div className="d-flex">
                                     <OverlayTrigger
                                         overlay={<Tooltip id={`tooltip-edit-${index}`}>Edit Task</Tooltip>}
