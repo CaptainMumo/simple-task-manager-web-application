@@ -4,8 +4,10 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { ClipboardText, House, SignIn, SignOut, Plus } from 'phosphor-react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logoutUser } from '../../api';
+import { useModal } from '../../context/ModalContext';
 
 const Navigation = () => {
+    const { openNewTaskModal } = useModal();
 
     // Check if user is logged in
     const token = localStorage.getItem('token');
@@ -35,12 +37,14 @@ const Navigation = () => {
                                         <span className="ms-1">Home</span>
                                     </Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to="/add-task">
+                                
+                                <Button variant="primary" className="bg-transparent border-0" onClick={openNewTaskModal}>
                                     <Nav.Link className="d-flex align-items-center">
                                         <Plus size={24} />
                                         <span className="ms-1">Add Task</span>
                                     </Nav.Link>
-                                </LinkContainer>
+                                </Button>
+
                                 <Button variant="danger" className="bg-transparent border-0" onClick={handleLogout}>
                                     <Nav.Link className="d-flex align-items-center">
                                         <SignOut size={24} />
