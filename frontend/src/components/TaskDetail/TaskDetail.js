@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 import { Pencil, Trash } from 'phosphor-react';
 
-const TaskDetail = ({ task, handleMarkComplete, handleEditTask, handleDeleteTask }) => {
+const TaskDetail = ({ task, onMarkComplete, onEditTask, onDeleteTask }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTask, setEditedTask] = useState({ ...task });
 
@@ -18,8 +18,12 @@ const TaskDetail = ({ task, handleMarkComplete, handleEditTask, handleDeleteTask
     };
 
     const handleUpdate = () => {
-        handleEditTask(editedTask);
+        onEditTask(editedTask);
         setIsEditing(false);
+    };
+
+    const handleDelete = () => {
+        onDeleteTask(task.id);
     };
 
     return (
@@ -72,7 +76,7 @@ const TaskDetail = ({ task, handleMarkComplete, handleEditTask, handleDeleteTask
                         <Button
                             variant={task.completed ? 'warning' : 'success'}
                             className="w-100"
-                            onClick={() => handleMarkComplete(task.id)}
+                            onClick={onMarkComplete}
                         >
                             {task.completed ? 'Mark as Incomplete' : 'Mark as Complete'}
                         </Button>
@@ -95,7 +99,7 @@ const TaskDetail = ({ task, handleMarkComplete, handleEditTask, handleDeleteTask
                             <Button variant="primary" className="w-50 me-1" onClick={toggleEdit}>
                                 <Pencil size={24} className="me-2" /> Edit
                             </Button>
-                            <Button variant="danger" className="w-50" onClick={() => handleDeleteTask(task.id)}>
+                            <Button variant="danger" className="w-50" onClick={handleDelete}>
                                 <Trash size={24} className="me-2" /> Delete
                             </Button>
                         </div>
