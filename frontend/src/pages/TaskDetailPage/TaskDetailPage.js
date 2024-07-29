@@ -1,6 +1,8 @@
 // src/pages/TaskDetailPage/TaskDetailPage.js
 import React from 'react';
 import TaskDetail from '../../components/TaskDetail';
+import { useModal } from '../../context/ModalContext';
+import NewTask from '../../components/NewTask';
 
 // Mock task data
 const task = {
@@ -25,6 +27,9 @@ const handleDeleteTask = (taskId) => {
 };
 
 const TaskDetailPage = () => {
+
+    const { openNewTaskModal, showNewTaskModal, closeNewTaskModal } = useModal();
+
     return (
         <div>
             <TaskDetail
@@ -32,6 +37,11 @@ const TaskDetailPage = () => {
                 handleMarkComplete={handleMarkComplete}
                 handleEditTask={handleEditTask}
                 handleDeleteTask={handleDeleteTask}
+            />
+            <NewTask
+                show={showNewTaskModal}
+                onHide={closeNewTaskModal}
+                onTaskCreated={() => {setTimeout(() => {closeNewTaskModal();}, 2000);}}
             />
         </div>
     );
