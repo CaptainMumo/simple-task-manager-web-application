@@ -9,11 +9,17 @@ const NotFound = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Redirect to home page after 2 seconds
+        setLoading(true);
+        // Change loading state after 1 second
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        // Redirect to home page after 3 seconds
         setTimeout(() => {
             navigate('/');
-        }, 2000);
+        }, 3000);
     }, [navigate]);
+
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
@@ -23,9 +29,12 @@ const NotFound = () => {
                 </div>
             ) : (
                 <div>
-                    <MagnifyingGlass size={48} />
-                    <h2>Page Not Found</h2>
-                    <p>Redirecting to the homepage...</p>
+                    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+                        <MagnifyingGlass size={48} color='red' />
+                        <h2>Page Not Found</h2>
+                        <p>Sending you home...</p>
+                    </div>
+
                 </div>
             )}
         </div>
