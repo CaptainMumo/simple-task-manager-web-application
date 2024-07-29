@@ -24,7 +24,7 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                 <Row className="w-50 mb-3">
                     <Col>
                         <div className="w-100 d-flex align-items-center justify-content-center" style={{ border: '1px solid grey', height: '3rem', borderRadius: '0.5rem', backgroundColor: '#f8f9fa' }}>
-                            No tasks. You're all clear. Add some and get rolling!
+                            Add some tasks to get started..!
                         </div>
                     </Col>
                 </Row>
