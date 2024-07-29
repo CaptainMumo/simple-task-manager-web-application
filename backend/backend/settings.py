@@ -150,3 +150,8 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True
 }
+
+# CORS - Allow React App to make requests to backend
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
