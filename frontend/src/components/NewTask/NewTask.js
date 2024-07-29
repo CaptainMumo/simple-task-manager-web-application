@@ -84,6 +84,7 @@ const NewTask = ({ show, onHide, onTaskCreated }) => {
                                 placeholder="Task Title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                isInvalid={title.length > 254}
                                 required
                             />
                         </Form.Group>
