@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { CheckCircle, Trash, Pencil, PlusCircle } from 'phosphor-react';
+import { Link } from 'react-router-dom';
 
 const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, handleDeleteTask }) => {
     return (
@@ -45,7 +46,11 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                                         onClick={() => handleMarkComplete(task.id)}
                                     />
                                 </OverlayTrigger>
-                                <div className={`flex-grow-1 ${task.completed ? 'text-decoration-line-through' : 'text-decoration-none'}`} >{task.title}</div>
+                                <div className={`flex-grow-1 ${task.completed ? 'text-decoration-line-through' : 'text-decoration-none'}`} >
+                                    <Link to={`/tasks/${task.id}`} className='text-decoration-none text-black'>
+                                        {task.title}
+                                    </Link>
+                                </div>
                                 <div className="d-flex">
                                     <OverlayTrigger
                                         overlay={<Tooltip id={`tooltip-edit-${index}`}>Edit Task</Tooltip>}
