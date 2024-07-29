@@ -1,51 +1,107 @@
-// src/components/Authentication/AuthForm.js
-import React, { useState } from 'react';
-import { Container, Tab, Tabs, Form, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Tab, Tabs, Form, Button, Spinner } from 'react-bootstrap';
+import { MdCheckCircle, MdCancel } from 'react-icons/md';
 import { registerUser, loginUser } from '../../api';
+import CustomModal from '../Modal';
 import './AuthForm.css';
-
 
 const AuthForm = () => {
     const [key, setKey] = useState('signin');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+    const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('');
+    const [showMessageModal, setShowMessageModal] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [isPasswordMatch, setIsPasswordMatch] = useState(false);
+    const [passwordErrors, setPasswordErrors] = useState([]);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
 
+    const passwordValidationRules = [
+        { rule: (pwd) => pwd.length >= 8 && pwd.length <= 20, message: 'Password must be 8-20 characters long' },
+        { rule: (pwd) => /[A-Z]/.test(pwd) && /[a-z]/.test(pwd), message: 'Password must have MiXeD cAsE letters' },
+        { rule: (pwd) => /\d/.test(pwd), message: 'Password must have at least one number [0-9]' },
+        { rule: (pwd) => /[!@#$%^&*(),.?":{}|<>`'/]/.test(pwd), message: 'Password must have at least one special character' },
+    ];
+
+    useEffect(() => {
+        validatePassword(password);
+    }, [password]);
+
+    const validatePassword = (pwd) => {
+        const errors = passwordValidationRules
+            .filter((rule) => !rule.rule(pwd))
+            .map((rule) => rule.message);
+        setPasswordErrors(errors);
+        setIsPasswordValid(errors.length === 0);
+    };
+
+    const handleConfirmPassword = (e) => {
+        setConfirmPassword(e.target.value);
+        setIsPasswordMatch(password.length > 0 && password === e.target.value);
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true
+        setMessage('');
+        setTitle('');
+        setIsError(false);
         try {
-            const response = await loginUser(username, password);
-            alert('Login successful');
-            // TODO: Display success message
-
+            await loginUser(username, password);
+            setTitle('Hoooray!');
+            setMessage('Redirecting to homepage...');
             // Redirect to homepage
-            window.location.href = '/';
+            setTimeout(() => window.location.href = '/', 3000);
         } catch (error) {
-            console.error('Login failed:', error);
+            setTitle('Login failed');
+            const errorMessage = error.response?.data?.username 
+                                    || error.response?.data?.password 
+                                    || error.response?.data?.detail 
+                                    || 'An error occurred during login';
+            setMessage(errorMessage);
+            setIsError(true);
+            console.error('Error logging in:', error.response?.data?.detail || error);
+        } finally {
+            setLoading(false); // Reset loading state
+            setShowMessageModal(true);
         }
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true
+        setMessage('');
+        setTitle('');
+        setIsError(false);
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setTitle('Registration failed');
+            setIsError(true);
+            setMessage('Passwords do not match');
+            setLoading(false); // Reset loading state
+            //setShowMessageModal(true);
             return;
         }
         try {
             await registerUser(username, password);
-            alert('Registration successful');    
-            // TODO: Display success message
-            
-            // Login after registration
-            handleLogin(e);
+            setTitle('Registration successful');
+            setMessage('Logging you in...');
+            await handleLogin(e);
         } catch (error) {
-            console.error('Registration failed:', error);
-            setError('An error occurred during registration');
+            setTitle('Registration failed');
+            const errorMessage = error.response?.data?.username
+                || error.response?.data?.password
+                || error.response?.data?.detail
+                || 'An error occurred during registration';
+            setMessage(errorMessage);
+            setIsError(true);
+        } finally {
+            setLoading(false); // Reset loading state
+            setShowMessageModal(true);
         }
     };
-
 
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">
@@ -78,9 +134,8 @@ const AuthForm = () => {
                                     required
                                 />
                             </Form.Group>
-                            {error && <p className="text-danger mt-2">{error}</p>}
-                            <Button variant="primary" type="submit" className="w-100">
-                                Sign In
+                            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+                                {loading ? <Spinner animation="border" size="sm" /> : 'Sign In'}
                             </Button>
                         </Form>
                         <p className="mt-3 text-center text-muted small">
@@ -106,24 +161,34 @@ const AuthForm = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    isInvalid={passwordErrors.length > 0}
+                                    isValid={isPasswordValid}
                                     required
                                 />
-                                <Form.Text className="text-muted small">
-                                    Your password must be 8-20 characters long.
-                                </Form.Text>
+                                <Form.Control.Feedback type="invalid">
+                                    <ul className="list-unstyled">
+                                        {passwordErrors.map((error, index) => (
+                                            <li key={index}>{error}</li>
+                                        ))}
+                                    </ul>
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                                 <Form.Control
                                     type="password"
                                     placeholder="Confirm Password"
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onChange={handleConfirmPassword}
+                                    isInvalid={confirmPassword.length > 0 && !isPasswordMatch}
+                                    isValid={(confirmPassword.length > 0 && isPasswordMatch)}
                                     required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    Passwords do not match
+                                </Form.Control.Feedback>
                             </Form.Group>
-                            {error && <p className="text-danger mt-2">{error}</p>}
-                            <Button variant="primary" type="submit" className="w-100">
-                                Sign Up
+                            <Button variant="primary" type="submit" className="w-100" disabled={loading || !isPasswordValid || !isPasswordMatch}>
+                                {loading ? <Spinner animation="border" size="sm" /> : 'Sign Up'}
                             </Button>
                         </Form>
                         <p className="mt-3 text-center text-muted small">
@@ -132,6 +197,35 @@ const AuthForm = () => {
                     </Tab>
                 </Tabs>
             </div>
+            <CustomModal
+                show={showMessageModal}
+                onHide={() => setShowMessageModal(false)}
+                title={title}
+                body={
+                    <div className='text-center align-items-center justify-content-center d-flex'>
+                        {loading ? (
+                            <>
+                                <div>
+                                    <Spinner animation="border" size="lg" />
+                                    <div className="mt-2">Please wait...</div>
+                                </div>
+                            </>
+                        ) : isError ? (
+                            <div>
+                                <MdCancel size={48} color="red" />
+                                <div className="text-danger">{message}</div>
+                            </div>
+                        ) : (
+                            <div>
+                                <MdCheckCircle size={48} color="green" />
+                                <div className="text-success">{message}</div>
+                            </div>
+                        )}
+                    </div>
+                }
+                autoClose={!isError}
+                autoCloseTime={3000}
+            />
         </Container>
     );
 };
