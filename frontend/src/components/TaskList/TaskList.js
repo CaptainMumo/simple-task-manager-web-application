@@ -6,7 +6,7 @@ import { CheckCircle, Trash, Pencil, PlusCircle } from 'phosphor-react';
 const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, handleDeleteTask }) => {
     return (
         <Container className="d-flex flex-column align-items-center mt-5">
-            <Row className="w-75 mb-3">
+            <Row className="w-50 mb-3">
                 <Col>
                     <Button
                         variant="outline-primary"
@@ -20,7 +20,7 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                 </Col>
             </Row>
             {tasks.length === 0 ? (
-                <Row className="w-75 mb-3">
+                <Row className="w-50 mb-3">
                     <Col>
                         <div className="w-100 d-flex align-items-center justify-content-center" style={{ border: '1px solid grey', height: '3rem', borderRadius: '0.5rem', backgroundColor: '#f8f9fa' }}>
                             No tasks. You're all clear. Add some and get rolling!
@@ -29,7 +29,7 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                 </Row>
             ) : (
                 tasks.map((task, index) => (
-                    <Row key={index} className="w-75 mb-3">
+                    <Row key={index} className="w-50 mb-3">
                         <Col>
                             <div className="d-flex align-items-center justify-content-between p-2" style={{ border: '1px solid grey', borderRadius: '0.5rem', backgroundColor: '#ffffff' }}>
                                 <OverlayTrigger
