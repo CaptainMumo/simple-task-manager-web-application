@@ -19,7 +19,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                         <Route path="/login" element={<AuthPage />} />
-                        <Route path="/task/:id" element={<PrivateRoute><TaskDetailPage /></PrivateRoute>} />
+                        <Route path="/tasks/:id" element={<PrivateRoute><TaskDetailPage /></PrivateRoute>} />
                     </Routes>
                 </div>
                 <Footer />
