@@ -44,6 +44,11 @@ export const updateTask = async (id, title, description, completed) => {
     return response.data;
 };
 
+export const patchTask = async (id, data) => {
+    const response = await api.patch(`/tasks/${id}/`, data);
+    return response.data;
+}
+
 export const deleteTask = async (id) => {
     const response = await api.delete(`/tasks/${id}/`);
     return response.data;
