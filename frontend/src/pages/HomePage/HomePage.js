@@ -75,7 +75,8 @@ const HomePage = () => {
             const task = tasks.find((task) => task.id === taskId);
             const completed = !task.completed;
             const patchedTask = await patchTask(taskId, { completed });
-            setTasks((prevTasks) => prevTasks.map((t) => (t.id === taskId ? patchedTask : t)));
+            const updatedTasks = (prevTasks) => prevTasks.map((t) => (t.id === taskId ? patchedTask : t));
+            setTasks(sortTasks(updatedTasks(tasks)));
             setModalTitle('Success');
             setModalMessage('Task updated successfully!');
             setIsError(false);
@@ -103,7 +104,8 @@ const HomePage = () => {
         setLoading(true);
         try {
             await deleteTask(taskIdToDelete);
-            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskIdToDelete));
+            const updatedTasks = (prevTasks) => prevTasks.filter((task) => task.id !== taskIdToDelete);
+            setTasks(sortTasks(updatedTasks(tasks)));
             setModalTitle('Success');
             setModalMessage('Task deleted successfully!');
             setIsError(false);
