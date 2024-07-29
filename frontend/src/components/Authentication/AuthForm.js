@@ -1,3 +1,4 @@
+// src/components/Authentication/AuthForm.js
 import React, { useState, useEffect } from 'react';
 import { Container, Tab, Tabs, Form, Button, Spinner } from 'react-bootstrap';
 import { MdCheckCircle, MdCancel } from 'react-icons/md';
