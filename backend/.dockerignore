@@ -1,0 +1,13 @@
+# Python-related
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+
+# Virtual environment
+venv/
+
+# Local development
+.env
