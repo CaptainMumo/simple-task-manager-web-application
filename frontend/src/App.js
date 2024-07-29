@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import TaskDetailPage from './pages/TaskDetailPage';
 import AuthPage from './pages/AuthPage';
 import PrivateRoute from './components/PrivateRoute';
+import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,6 +23,7 @@ const App = () => {
                             <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>} />
                             <Route path="/login" element={<AuthPage />} />
                             <Route path="/tasks/:id" element={<PrivateRoute><TaskDetailPage /></PrivateRoute>} />
+                            <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </div>
                     <Footer />
