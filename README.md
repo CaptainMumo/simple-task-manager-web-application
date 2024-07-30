@@ -151,3 +151,4 @@ npm start
 ## Video Demo
 The following is a short video demonstrating how to use the application.
 
+[Click here to watch](https://www.loom.com/share/d43e8fc5cc6e42089406b8e75d94f24c?sid=b237b1db-023b-4008-9c8a-80da6a07ec84)
