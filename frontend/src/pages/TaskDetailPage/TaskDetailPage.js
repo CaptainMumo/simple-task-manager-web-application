@@ -2,26 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import TaskDetail from '../../components/TaskDetail';
 import { useModal } from '../../context/ModalContext';
-import NewTask from '../../components/NewTask';
+import TaskModal from '../../components/TaskModal';
 import { useParams } from 'react-router-dom';
-import { getTask, updateTask, deleteTask, patchTask } from '../../api';
+import { getTask, deleteTask, patchTask } from '../../api';
 import CustomModal from '../../components/Modal/CustomModal';
 import { Button, Spinner } from 'react-bootstrap';
 import { MdCancel, MdCheckCircle } from 'react-icons/md';
 
-
 const TaskDetailPage = () => {
     const { id: taskId } = useParams();
-    const { openNewTaskModal, showNewTaskModal, closeNewTaskModal } = useModal();
+    const { openTaskModal, showTaskModal, closeTaskModal } = useModal();
 
     const [task, setTask] = useState(null);
+    const [taskToUpdate, setTaskToUpdate] = useState(null);
     const [showMessageModal, setShowMessageModal] = useState(false);
     const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [modalMessage, setModalMessage] = useState('');
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [timeOut, setTimeOut] = useState(3000);
+    const timeOut = 2000;
 
     useEffect(() => {
         setLoading(true);
@@ -30,7 +30,7 @@ const TaskDetailPage = () => {
                 const data = await getTask(taskId);
                 setTask(data);
             } catch (error) {
-                setModalTitle('Error fetching task');
+                setModalTitle('Ooopps!');
                 setModalMessage(
                     <>
                         <p>Task Not Found</p>
@@ -46,7 +46,6 @@ const TaskDetailPage = () => {
         fetchTaskData();
     }, [taskId]);
 
-
     const handleMarkComplete = async () => {
         setLoading(true);
         try {
@@ -57,34 +56,32 @@ const TaskDetailPage = () => {
             setIsError(false);
         } catch (error) {
             setModalTitle('Error');
-            setModalMessage('An error occurred while marking task as complete. Please try again later.');
+            setModalMessage('Marking task as complete failed. Please try again later.');
             setIsError(true);
         } finally {
             setLoading(false);
             setShowMessageModal(true);
         }
-
     };
 
-    const handleEditTask = async (updatedTask) => {
-        setLoading(true);
-        try {
-            const { id, title, description, completed } = updatedTask;
-            const editedTask = await updateTask(id, title, description, completed);
-            setTask(editedTask);
-            setModalTitle('Success');
-            setModalMessage('Task updated successfully!');
-            setIsError(false);
-        } catch (error) {
-            setModalTitle('Error');
-            setModalMessage('An error occurred while editing task. Please try again later.');
-            setIsError(true);
+    const handleEditTask = () => {
+        setTaskToUpdate(task);
+        openTaskModal();
+    };
 
-        } finally {
-            setLoading(false);
-            setShowMessageModal(true);
+    const handleTaskUpdated = (updatedTask) => {
+        if (taskToUpdate) {
+            setTask(updatedTask);
         }
+        setTimeout(() => {
+            closeTaskModal();
+            setTaskToUpdate(null);
+        }, timeOut);     
+    };
 
+    const handleTaskModalClose = () => {
+        closeTaskModal();
+        setTaskToUpdate(null);
     };
 
     const handleDeleteTask = () => {
@@ -100,13 +97,13 @@ const TaskDetailPage = () => {
             setModalTitle('Success');
             setModalMessage('Task deleted successfully!');
             setIsError(false);
-            // Go back to previous page
+            // Go back to the previous page
             setTimeout(() => {
                 window.history.back();
             }, timeOut);
         } catch (error) {
             setModalTitle('Error');
-            setModalMessage('An error occurred while deleting task. Please try again later.');
+            setModalMessage('Deleting task failed. Please try again later.');
             setIsError(true);
         } finally {
             setLoading(false);
@@ -121,17 +118,21 @@ const TaskDetailPage = () => {
                     <Spinner animation="border" size="lg" />
                 </div>
             ) : (
-                task && (<TaskDetail
-                    task={task}
-                    onMarkComplete={handleMarkComplete}
-                    onEditTask={handleEditTask}
-                    onDeleteTask={handleDeleteTask}
-                />)
+                task && (
+                    <TaskDetail
+                        task={task}
+                        onMarkComplete={handleMarkComplete}
+                        onEditTask={handleEditTask}
+                        onDeleteTask={handleDeleteTask}
+                    />
+                )
             )}
-            <NewTask
-                show={showNewTaskModal}
-                onHide={closeNewTaskModal}
-                onTaskCreated={() => { setTimeout(() => { closeNewTaskModal(); }, timeOut); }}
+            <TaskModal
+                show={showTaskModal}
+                onHide={handleTaskModalClose}
+                onTaskCreatedOrUpdated={handleTaskUpdated}
+                task={taskToUpdate}
+                timeOut={timeOut}
             />
             <CustomModal
                 show={showMessageModal}
@@ -162,10 +163,7 @@ const TaskDetailPage = () => {
             />
             <CustomModal
                 show={showConfirmDeleteModal}
-                onHide={() => {
-                    setShowConfirmDeleteModal(false);
-                    setShowMessageModal(true);
-                }}
+                onHide={() => setShowConfirmDeleteModal(false)}
                 title="Confirm Delete"
                 body="Are you sure you want to delete this task?"
                 footer={
