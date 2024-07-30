@@ -10,6 +10,7 @@ The `backend` folder is the main Django REST API project and contains a single a
 
 The `frontend` folder is the React App created using `npx create-react-app frontend`. It contains all the frontend code including Docker configuration file.
 
+```
 task-manager/
 │
 ├── backend/
@@ -30,6 +31,7 @@ task-manager/
 ├── .gitignore
 ├── docker-compose.yml
 └── README.md
+```
 
 ## Project Setup Instructions
 
@@ -43,6 +45,7 @@ There are two options for running this project:
 
 ```bash
 git clone git@github.com:CaptainMumo/task-manager.git
+```
 
 2. Ensure you have [Docker](https://www.docker.com/get-started) and [docker-compose](https://docs.docker.com/compose/install/) installed and running on your machine.
 
@@ -50,11 +53,13 @@ git clone git@github.com:CaptainMumo/task-manager.git
 
    ```bash
    cd path/to/task-manager
+   ```
 
 4. Build and start the application using Docker Compose:
 
 ```bash
 docker-compose up --build
+```
 
 5. Above step takes a while to setup the images and run the servers. Be patient until you see the following!
 
