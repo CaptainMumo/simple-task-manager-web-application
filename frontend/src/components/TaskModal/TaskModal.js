@@ -1,38 +1,56 @@
-// src/components/NewTask/NewTask.js
-import React, { useState } from 'react';
+// src/components/TaskModal/TaskModal.js
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
-import { MdCheckCircle, MdCancel } from 'react-icons/md'; // Import icons
+import { MdCheckCircle, MdCancel } from 'react-icons/md';
 import CustomModal from '../Modal/CustomModal';
-import { createTask } from '../../api';
-import './NewTask.css'; // Import custom CSS
+import { createTask, updateTask } from '../../api';
+import './TaskModal.css';
 
-const NewTask = ({ show, onHide, onTaskCreated }) => {
+const TaskModal = ({ show, onHide, onTaskCreatedOrUpdated, task, timeOut }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    if (!timeOut) timeOut = 2000;
 
-    const handleCreateTask = async () => {
+    useEffect(() => {
+        if (task) {
+            setTitle(task.title);
+            setDescription(task.description);
+        } else {
+            setTitle('');
+            setDescription('');
+        }
+    }, [task]);
+
+    const handleSaveTask = async () => {
         setLoading(true);
         setMessage('');
         setError('');
         try {
-            const response = await createTask(title, description);
-            setMessage('Task created successfully');
+            let response;
+            if (task) {
+                response = await updateTask(task.id, title, description);
+                setMessage('Task updated successfully');
+            } else {
+                response = await createTask(title, description);
+                setMessage('Task created successfully');
+            }
             setTimeout(() => {
                 setMessage('');
-            }, 2000);
-            onTaskCreated(response.data);
+            }, timeOut);
+            onTaskCreatedOrUpdated(response);
         } catch (err) {
-            console.error(err);
-            setError('Task creation failed! Try again!');
+            setError(task ? 'Task update failed! Try again!' : 'Task creation failed! Try again!');
             setTimeout(() => {
                 setError('');
-            }, 2000);
+            }, timeOut);
         } finally {
-            setTitle('');
-            setDescription('');
+            if (!task) {
+                setTitle('');
+                setDescription('');
+            }
             setLoading(false);
         }
     };
@@ -43,7 +61,7 @@ const NewTask = ({ show, onHide, onTaskCreated }) => {
                 <div className="status-overlay">
                     <div className="status-content">
                         <Spinner animation="border" variant="primary" size="lg" />
-                        <div className="status-message">Creating...</div>
+                        <div className="status-message">{task ? 'Updating...' : 'Creating...'}</div>
                     </div>
                 </div>
             );
@@ -74,7 +92,7 @@ const NewTask = ({ show, onHide, onTaskCreated }) => {
         <CustomModal
             show={show}
             onHide={onHide}
-            title="Create New Task"
+            title={task ? "Update Task" : "Create New Task"}
             body={
                 <div className="modal-body-container">
                     <Form>
@@ -106,8 +124,8 @@ const NewTask = ({ show, onHide, onTaskCreated }) => {
                     <Button variant="secondary" onClick={onHide}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCreateTask} disabled={loading}>
-                        {loading ? 'Creating...' : 'Create Task'}
+                    <Button variant="primary" onClick={handleSaveTask} disabled={loading}>
+                        {loading ? (task ? 'Updating...' : 'Creating...') : (task ? 'Update Task' : 'Create Task')}
                     </Button>
                 </>
             }
@@ -115,4 +133,4 @@ const NewTask = ({ show, onHide, onTaskCreated }) => {
     );
 };
 
-export default NewTask;
+export default TaskModal;

@@ -1,7 +1,8 @@
 // src/components/Modal/CustomModal.js
 import React, { useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
+// Dynamic Custom Modal for new task creation and update and displaying success and error messages
 const CustomModal = ({ show, onHide, title, body, footer, autoClose, autoCloseTime }) => {
     useEffect(() => {
         let timer;
