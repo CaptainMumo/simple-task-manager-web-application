@@ -1,11 +1,7 @@
 services:
   backend:
     build: ./backend
-    command: >
-      sh -c "
-      python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000
-      "
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
     ports:
@@ -16,7 +12,5 @@ services:
   frontend:
     build: ./frontend
     command: npm run start
-    volumes:
-      - ./frontend:/app
     ports:
       - "3000:3000"
