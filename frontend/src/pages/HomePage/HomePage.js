@@ -1,8 +1,7 @@
 // src/pages/HomePage/HomePage.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import TaskList from '../../components/TaskList';
-import NewTask from '../../components/NewTask/';
+import TaskModal from '../../components/TaskModal';
 import { getTasks, patchTask, deleteTask } from '../../api';
 import { useModal } from '../../context/ModalContext';
 import { Button, Spinner } from 'react-bootstrap';
@@ -22,8 +21,7 @@ const sortTasks = (tasks) => {
 }
 
 const HomePage = () => {
-    const { openNewTaskModal, showNewTaskModal, closeNewTaskModal } = useModal();
-
+    const { openTaskModal, showTaskModal, closeTaskModal } = useModal();
     const [tasks, setTasks] = useState([]);
     const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
     const [showMessageModal, setShowMessageModal] = useState(false);
@@ -32,9 +30,8 @@ const HomePage = () => {
     const [isError, setIsError] = useState(false);
     const [loading, setLoading] = useState(true);
     const [taskIdToDelete, setTaskIdToDelete] = useState(null);
-    const timeOut = 3000;
-
-    const navigate = useNavigate();
+    const [currentTask, setCurrentTask] = useState(null);
+    const timeOut = 2000;
 
     // Fetch tasks from the server
     useEffect(() => {
@@ -58,16 +55,23 @@ const HomePage = () => {
     };
 
     const handleAddTask = () => {
-        openNewTaskModal();
+        setCurrentTask(null);
+        openTaskModal();
     };
 
-    const handleTaskCreated = () => {
+    const handleTaskCreatedorUpdated = () => {
         fetchTasks();
         // Delay a little before closing modal
         setTimeout(() => {
-            closeNewTaskModal();
+            closeTaskModal();
+            setCurrentTask(null);
         }, timeOut);
-    }
+    };
+
+    const handleTaskModalClose = () => {
+        closeTaskModal();
+        setCurrentTask(null);
+    };
 
     const handleMarkComplete = async (taskId) => {
         setLoading(true);
@@ -92,7 +96,9 @@ const HomePage = () => {
     };
 
     const handleEditTask = (taskId) => {
-        navigate(`/tasks/${taskId}`);
+        const taskToEdit = tasks.find(task => task.id === taskId);
+        setCurrentTask(taskToEdit);
+        openTaskModal();
     };
 
     const handleDeleteTask = (taskId) => {
@@ -137,10 +143,12 @@ const HomePage = () => {
                 />
             )}
 
-            <NewTask
-                show={showNewTaskModal}
-                onHide={closeNewTaskModal}
-                onTaskCreated={handleTaskCreated}
+            <TaskModal
+                show={showTaskModal}
+                onHide={handleTaskModalClose}
+                onTaskCreatedOrUpdated={handleTaskCreatedorUpdated}
+                task={currentTask}
+                timeOut={timeOut}
             />
             <CustomModal
                 show={showMessageModal}
