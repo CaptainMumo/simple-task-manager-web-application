@@ -160,8 +160,7 @@ The following is a short video demonstrating how to use the application.
 
 [Click here to watch on Loom](https://www.loom.com/share/d43e8fc5cc6e42089406b8e75d94f24c?sid=b237b1db-023b-4008-9c8a-80da6a07ec84)
 
-<div style="position: relative; padding-bottom: 52.47813411078718%; height: 0;"><iframe src="https://www.loom.com/embed/d43e8fc5cc6e42089406b8e75d94f24c?sid=a7901547-2095-41dc-8e83-9fd5e6be0781" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
-
+<iframe src="https://www.loom.com/embed/d43e8fc5cc6e42089406b8e75d94f24c?sid=a7901547-2095-41dc-8e83-9fd5e6be0781" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ### Contact Me
 Feel free to reach out to me via mumopeter17@gmail.com in case of any issues.
