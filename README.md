@@ -6,7 +6,7 @@ This is a simple task manager web application with a Django REST backend and a R
 
 The root folder `task-manager` contains the two project folders `backend` and `frontend` as well as `.gitignore` `docker-compose.yml` and this `README.md`.
 
-The `backend` folder is the main Django REST API project and contains a single application `tasks`. This folder also contains the project packages in `reuirements.txt` and Docker configuration file.
+The `backend` folder is the main Django REST API project and contains a single application `tasks`. This folder also contains the project packages in `requirements.txt` and Docker configuration file.
 
 The `frontend` folder is the React App created using `npx create-react-app frontend`. It contains all the frontend code including Docker configuration file.
 
