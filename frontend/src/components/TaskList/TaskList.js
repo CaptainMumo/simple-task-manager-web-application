@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 
 const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, handleDeleteTask }) => {
     return (
-        <Container className="d-flex flex-column align-items-center mt-5">
-            <Row className="w-50 mb-3">
-                <Col>
+        <Container className="d-flex flex-column align-items-center mt-5 justify-content-center">
+            <Row className="w-100 mb-3 justify-content-center">
+                <Col xs={12} md={9} lg={6}>
                     <Button
                         variant="outline-primary"
                         className="w-100 d-flex align-items-center justify-content-center"
@@ -21,8 +21,9 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                 </Col>
             </Row>
             {tasks.length === 0 ? (
-                <Row className="w-50 mb-3">
-                    <Col>
+                <Row className="w-100 mb-3 justify-content-center">
+
+                    <Col xs={12} md={9} lg={6}>
                         <div className="w-100 d-flex align-items-center justify-content-center" style={{ border: '1px solid grey', height: '3rem', borderRadius: '0.5rem', backgroundColor: '#f8f9fa' }}>
                             Add some tasks to get started..!
                         </div>
@@ -30,8 +31,9 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                 </Row>
             ) : (
                 tasks.map((task, index) => (
-                    <Row key={index} className="w-50 mb-3">
-                        <Col>
+                    <Row key={index} className="w-100 mb-3 justify-content-center">
+
+                        <Col xs={12} md={9} lg={6}>
                             <div className="d-flex align-items-center justify-content-between p-2" style={{ border: '1px solid grey', borderRadius: '0.5rem', backgroundColor: '#ffffff' }}>
                                 <OverlayTrigger
                                     overlay={
@@ -46,7 +48,7 @@ const TaskList = ({ tasks, handleAddTask, handleMarkComplete, handleEditTask, ha
                                         onClick={() => handleMarkComplete(task.id)}
                                     />
                                 </OverlayTrigger>
-                                <div className={`flex-grow-1 ${task.completed ? 'text-decoration-line-through' : 'text-decoration-none'}`} >
+                                <div className={`flex-grow-1 text-truncate ${task.completed ? 'text-decoration-line-through' : 'text-decoration-none'}`} >
                                     <Link to={`/tasks/${task.id}`} className='text-decoration-none text-black'>
                                         {task.title}
                                     </Link>
