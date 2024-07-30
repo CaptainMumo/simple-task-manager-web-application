@@ -158,6 +158,8 @@ npm start
 ## Video Demo
 The following is a short video demonstrating how to use the application.
 
+Note: Clicking the thumbnail does not open the video, **use the following link to open the video on Loom**!
+
 [Click here to watch the video on Loom](https://www.loom.com/share/d43e8fc5cc6e42089406b8e75d94f24c?sid=b237b1db-023b-4008-9c8a-80da6a07ec84)
 
 ![Demo Video](https://cdn.loom.com/sessions/thumbnails/d43e8fc5cc6e42089406b8e75d94f24c-d5d4dff0d1cb59eb-full-play.gif)
