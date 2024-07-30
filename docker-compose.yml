@@ -15,7 +15,7 @@ services:
       - DEBUG=True
   frontend:
     build: ./frontend
-    command: npm start
+    command: npm run start
     volumes:
       - ./frontend:/app
     ports:
