@@ -7,7 +7,7 @@ import { logoutUser } from '../../api';
 import { useModal } from '../../context/ModalContext';
 
 const Navigation = () => {
-    const { openNewTaskModal } = useModal();
+    const { openTaskModal } = useModal();
 
     // Check if user is logged in
     const token = localStorage.getItem('token');
@@ -38,7 +38,7 @@ const Navigation = () => {
                                     </Nav.Link>
                                 </LinkContainer>
                                 
-                                <Button variant="primary" className="bg-transparent border-0" onClick={openNewTaskModal}>
+                                <Button variant="primary" className="bg-transparent border-0" onClick={openTaskModal}>
                                     <Nav.Link className="d-flex align-items-center">
                                         <Plus size={24} />
                                         <span className="ms-1">Add Task</span>
