@@ -20,24 +20,24 @@ const AuthForm = () => {
     const [passwordErrors, setPasswordErrors] = useState([]);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-    const passwordValidationRules = [
-        { rule: (pwd) => pwd.length >= 8 && pwd.length <= 20, message: 'Password must be 8-20 characters long' },
-        { rule: (pwd) => /[A-Z]/.test(pwd) && /[a-z]/.test(pwd), message: 'Password must have MiXeD cAsE letters' },
-        { rule: (pwd) => /\d/.test(pwd), message: 'Password must have at least one number [0-9]' },
-        { rule: (pwd) => /[!@#$%^&*(),.?":{}|<>`'/]/.test(pwd), message: 'Password must have at least one special character' },
-    ];
-
+    
     useEffect(() => {
+        const passwordValidationRules = [
+            { rule: (pwd) => pwd.length >= 8 && pwd.length <= 20, message: 'Password must be 8-20 characters long' },
+            { rule: (pwd) => /[A-Z]/.test(pwd) && /[a-z]/.test(pwd), message: 'Password must have MiXeD cAsE letters' },
+            { rule: (pwd) => /\d/.test(pwd), message: 'Password must have at least one number [0-9]' },
+            { rule: (pwd) => /[!@#$%^&*(),.?":{}|<>`'/]/.test(pwd), message: 'Password must have at least one special character' },
+        ];
+        const validatePassword = (pwd) => {
+            const errors = passwordValidationRules
+                .filter((rule) => !rule.rule(pwd))
+                .map((rule) => rule.message);
+            setPasswordErrors(errors);
+            setIsPasswordValid(errors.length === 0);
+        };
         validatePassword(password);
     }, [password]);
 
-    const validatePassword = (pwd) => {
-        const errors = passwordValidationRules
-            .filter((rule) => !rule.rule(pwd))
-            .map((rule) => rule.message);
-        setPasswordErrors(errors);
-        setIsPasswordValid(errors.length === 0);
-    };
 
     const handleConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
