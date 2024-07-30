@@ -1,5 +1,5 @@
 // src/context/ModalContext/ModalContext.js
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const ModalContext = createContext();
 
