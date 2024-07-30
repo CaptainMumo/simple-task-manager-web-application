@@ -158,9 +158,9 @@ npm start
 ## Video Demo
 The following is a short video demonstrating how to use the application.
 
-[Click here to watch on Loom](https://www.loom.com/share/d43e8fc5cc6e42089406b8e75d94f24c?sid=b237b1db-023b-4008-9c8a-80da6a07ec84)
+[Click here to watch the video on Loom](https://www.loom.com/share/d43e8fc5cc6e42089406b8e75d94f24c?sid=b237b1db-023b-4008-9c8a-80da6a07ec84)
 
-<iframe src="https://www.loom.com/embed/d43e8fc5cc6e42089406b8e75d94f24c?sid=a7901547-2095-41dc-8e83-9fd5e6be0781" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+![Demo Video](https://cdn.loom.com/sessions/thumbnails/d43e8fc5cc6e42089406b8e75d94f24c-d5d4dff0d1cb59eb-full-play.gif)
 
 ### Contact Me
 Feel free to reach out to me via mumopeter17@gmail.com in case of any issues.
