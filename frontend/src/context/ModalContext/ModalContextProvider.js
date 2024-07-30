@@ -4,14 +4,14 @@ import ModalContext from './ModalContext';
 
 
 export const ModalProvider = ({ children }) => {
-    const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+    const [showTaskModal, setShowTaskModal] = useState(false);
 
 
-    const openNewTaskModal = () => setShowNewTaskModal(true);
-    const closeNewTaskModal = () => setShowNewTaskModal(false);
+    const openTaskModal = () => setShowTaskModal(true);
+    const closeTaskModal = () => setShowTaskModal(false);
 
     return (
-        <ModalContext.Provider value={{ showNewTaskModal, openNewTaskModal, closeNewTaskModal }}>
+        <ModalContext.Provider value={{ showTaskModal: showTaskModal, openTaskModal: openTaskModal, closeTaskModal: closeTaskModal }}>
             {children}
         </ModalContext.Provider>
     );
